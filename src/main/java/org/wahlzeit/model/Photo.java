@@ -43,6 +43,8 @@ public class Photo extends DataObject {
 	/**
 	 *
 	 */
+	public Location location = null;
+	
 	public static final String IMAGE = "image";
 	public static final String THUMB = "thumb";
 	public static final String LINK = "link";
@@ -147,7 +149,28 @@ public class Photo extends DataObject {
 
 		incWriteCount();
 	}
+	
+	/**
+	 * @methodtype constructor
+	 */
+	public Photo(Location loc) {
+		this.location = loc;
+	}
+	
+	/**
+	 * @methodtype get
+	 */
+	public Location getLocation() {
+		return this.location;
+	}
 
+	/**
+	 * @methodtype set
+	 */
+	public void setLocation(Location loc) {
+		this.location = loc;
+	}
+	
 	/**
 	 * @methodtype get
 	 */
