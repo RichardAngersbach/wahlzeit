@@ -1,10 +1,12 @@
 package org.wahlzeit.model;
 
 public class Location {
-	public Coordinate coordinate;
+	public Coordinate coordinate = new Coordinate(0.0, 0.0, 0.0);
 	
 	public Location(Coordinate coord) {
-		this.coordinate = coord;
+		if(coord != null) {
+			this.coordinate = coord;
+		}
 	}
 	
 	public Coordinate getCoordinate() {
