@@ -22,25 +22,50 @@ package org.wahlzeit.services.mailing;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.main.ServiceMain;
 import org.wahlzeit.services.EmailAddress;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import javax.mail.Message;
+import javax.mail.Multipart;
+
 public class EmailServiceTest {
 
 	EmailService emailService = null;
+	MockEmailService mockEmailService = null;
+	SmtpEmailService smtpEmailService = null;
+	
 	EmailAddress validAddress = null;
+	EmailAddress validAddressTo = null;
+	EmailAddress validAddressBCC = null;
+	
+	Message mockMessage = null;
+	Message smtpMessage = null;
+	
+	Multipart mp = null;
 
 	@Before
 	public void setup() throws Exception {
 		emailService = EmailServiceManager.getDefaultService();
+		mockEmailService = new MockEmailService();
+		smtpEmailService = new SmtpEmailService();
+		
 		validAddress = EmailAddress.getFromString("test@test.de");
+		validAddressTo = EmailAddress.getFromString("test2@test.de");
+		validAddressBCC = EmailAddress.getFromString("test3@test.de");
+		
+		mockMessage = mockEmailService.doCreateEmail(validAddress, validAddressTo, validAddressBCC, "hello", "");
+		smtpMessage = smtpEmailService.doCreateEmail(validAddress, validAddressTo, validAddressBCC, "hello", "body");
+		
+		mp = smtpEmailService.createMultipart("body");
 	}
 
 	@Test
 	public void testSendInvalidEmail() {
 		try {
+			assertFalse(ServiceMain.getInstance().isInProduction());
 			assertFalse(emailService.sendEmailIgnoreException(validAddress, null, "lol", "hi"));
 			assertFalse(emailService.sendEmailIgnoreException(null, validAddress, null, "body"));
 			assertFalse(emailService.sendEmailIgnoreException(validAddress, null, "hi", "       "));
@@ -48,11 +73,27 @@ public class EmailServiceTest {
 			Assert.fail("Silent mode does not allow exceptions");
 		}
 	}
+	
+	@Test
+	public void testMockEmailService() {
+		try {
+			assertTrue(mockMessage == null);
+			mockEmailService.doSendEmail(mockMessage);
+		} catch (MailingException ex) { 
+			Assert.fail("Silent mode does not allow exceptions");
+		}
+	}
+	
+	@Test
+	public void testSmtpEmailService() {
+		assertTrue(smtpMessage != null);
+		assertTrue(mp != null);
+	}
 
 	@Test
 	public void testSendValidEmail() {
 		try {
-			assertTrue(emailService.sendEmailIgnoreException(validAddress, validAddress, "hi", "test"));
+			assertTrue(emailService.sendEmailIgnoreException(validAddress, validAddressTo, "hi", "test"));
 		} catch (Exception ex) {
 			Assert.fail("Silent mode does not allow exceptions");
 		}
