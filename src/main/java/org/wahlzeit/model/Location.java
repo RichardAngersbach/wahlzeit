@@ -1,7 +1,7 @@
 package org.wahlzeit.model;
 
 public class Location {
-	public Coordinate coordinate = new Coordinate(0.0, 0.0, 0.0);
+	public Coordinate coordinate = new CartesianCoordinate(0.0, 0.0, 0.0);
 	
 	public Location(Coordinate coord) {
 		if(coord != null) {

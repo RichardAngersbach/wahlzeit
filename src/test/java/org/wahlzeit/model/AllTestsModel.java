@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ AccessRightsTest.class, CoordinateTest.class, FlagReasonTest.class, GenderTest.class, GuestTest.class,
+@SuiteClasses({ AccessRightsTest.class, CartesianCoordinateTest.class, SphericCoordinateTest.class, FlagReasonTest.class, GenderTest.class, GuestTest.class,
 		LocationTest.class, PhotoFilterTest.class, SkylinePhotoFactoryTest.class, SkylinePhotoManagerTest.class,
 		SkylinePhotoTest.class, TagsTest.class, UserStatusTest.class, ValueTest.class })
 public class AllTestsModel {

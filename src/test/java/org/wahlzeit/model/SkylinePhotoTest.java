@@ -24,7 +24,7 @@ public class SkylinePhotoTest {
 	@Before
 	public void setUpPhotos() {
 		photo = new SkylinePhoto();
-		photoLoc = new SkylinePhoto(new Location(new Coordinate(0.0, 0.0, 0.0)));
+		photoLoc = new SkylinePhoto(new Location(new CartesianCoordinate(0.0, 0.0, 0.0)));
 		photoID = new SkylinePhoto(new PhotoId(0));
 	}
 	
