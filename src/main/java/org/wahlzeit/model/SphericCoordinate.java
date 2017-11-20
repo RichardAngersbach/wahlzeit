@@ -31,7 +31,7 @@ public class SphericCoordinate implements Coordinate {
 			this.longitude = longitude;
 		} else {
 			int n = (int) (longitude / Math.PI);
-			this.longitude = longitude - (n-1) * Math.PI; 
+			this.longitude = longitude - n * Math.PI; 
 		}
 		//radius is non-negative
 		if(radius >= 0) {
@@ -119,7 +119,7 @@ public class SphericCoordinate implements Coordinate {
 			this.longitude = longitude;
 		} else {
 			int n = (int) (longitude / Math.PI);
-			this.longitude = longitude - (n-1) * Math.PI; 
+			this.longitude = longitude - n * Math.PI; 
 		}
 	}
 

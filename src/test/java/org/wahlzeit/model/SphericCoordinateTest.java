@@ -29,7 +29,7 @@ public class SphericCoordinateTest {
 		assertTrue(Math.abs(a.getLatitude()) <= Math.PI/2.0);
 		assertTrue(Math.abs(a.getLongitude()) <= Math.PI);
 		assertEquals(Math.abs(c.getLatitude()), 0.0, 0.001);
-		assertEquals(Math.abs(c.getLongitude()), Math.PI, 0.001);
+		assertEquals(Math.abs(c.getLongitude()), 0.0, 0.001);
 		
 		assertTrue(d.equals(new CartesianCoordinate(0.5, 0.5, 1/Math.sqrt(2.0))));
 		
@@ -78,8 +78,11 @@ public class SphericCoordinateTest {
 		
 		//pre-calculated with https://www.lpi.usra.edu/lunar/tools/lunardistancecalc/
 		assertEquals(a.getDistance(d), 1364.5507690867269, 0.001);
-		assertEquals(c.getDistance(d), 3638.8020508979384, 0.001);
+		assertEquals(c.getDistance(d), 1819.4010254489688, 0.001);
 		assertEquals(a.asCartesianCoordinate().getDistance(d), 1364.5507690867269, 0.001);
-		assertEquals(c.asCartesianCoordinate().getDistance(d), 3638.8020508979384, 0.001);
+		assertEquals(c.asCartesianCoordinate().getDistance(d), 1819.4010254489688, 0.001);
+		
+		assertEquals(a.getCartesianDistance(null), -Double.MAX_VALUE, 0.001);
+		assertEquals(a.getSphericDistance(null), -Double.MAX_VALUE, 0.001);
 	}
 }
