@@ -1,11 +1,9 @@
 package org.wahlzeit.model;
 
-public class CartesianCoordinate implements Coordinate {
+public class CartesianCoordinate extends AbstractCoordinate {
 	private double x;
 	private double y;
 	private double z;
-	
-	private double eps = 0.001;
 	
 	//default constructor
 	public CartesianCoordinate() {
@@ -25,28 +23,16 @@ public class CartesianCoordinate implements Coordinate {
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof Coordinate && obj != null) {
-			return isEqual((Coordinate) obj);
-		}
-		return false;
-	}
-
-	@Override
 	public CartesianCoordinate asCartesianCoordinate() {
 		return this;
 	}
 	
 	@Override
 	public double getCartesianDistance(Coordinate coord) {
-		if(coord == null) {
-			return -Double.MAX_VALUE;
-		}
 		CartesianCoordinate tmp = coord.asCartesianCoordinate();		
 		if(tmp.x >= Double.MAX_VALUE || tmp.y >= Double.MAX_VALUE || tmp.z >= Double.MAX_VALUE) {
 			throw new IllegalArgumentException("Illegal Arguments");
 		}
-		
 		return Math.sqrt( Math.pow(this.x - tmp.x, 2.0) 
 						+ Math.pow(this.y - tmp.y, 2.0) 
 						+ Math.pow(this.z - tmp.z, 2.0) );
@@ -81,21 +67,7 @@ public class CartesianCoordinate implements Coordinate {
 	}
 
 	@Override
-	public double getDistance(Coordinate coord) {
-		if(coord == null) {
-			return -Double.MAX_VALUE;
-		}
-		if(coord instanceof CartesianCoordinate) {
-			return getCartesianDistance(coord);
-		}
-		return getSphericDistance(coord);
-	}
-
-	@Override
 	public boolean isEqual(Coordinate coord) {
-		if(coord == null) {
-			return false;
-		}
 		CartesianCoordinate tmp = coord.asCartesianCoordinate();
 		return	Math.abs(this.x - tmp.x) <= eps 
 			 && Math.abs(this.y - tmp.y) <= eps 

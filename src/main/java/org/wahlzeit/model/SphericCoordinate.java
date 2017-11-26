@@ -1,11 +1,9 @@
 package org.wahlzeit.model;
 
-public class SphericCoordinate implements Coordinate {
+public class SphericCoordinate extends AbstractCoordinate {
 	private double latitude; //in radians
 	private double longitude; // in radians
 	private double radius;
-	
-	private double eps = 0.001;
 	
 	//default constructor
 	public SphericCoordinate() {
@@ -40,14 +38,6 @@ public class SphericCoordinate implements Coordinate {
 			this.radius = 0.0;
 		}
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof Coordinate && obj != null) {
-			return isEqual((Coordinate) obj);
-		}
-		return false;
-	}
 
 	@Override
 	public CartesianCoordinate asCartesianCoordinate() {
@@ -71,9 +61,6 @@ public class SphericCoordinate implements Coordinate {
 
 	@Override
 	public double getSphericDistance(Coordinate coord) {
-		if(coord == null) {
-			return -Double.MAX_VALUE;
-		}
 		SphericCoordinate tmp = coord.asSphericCoordinate();
 		if(Math.abs(tmp.getRadius()) >= Double.MAX_VALUE || Math.abs(tmp.getLongitude()) >= Double.MAX_VALUE || Math.abs(tmp.getLatitude()) >= Double.MAX_VALUE) {
 			throw new IllegalArgumentException("Illegal Arguments");
@@ -86,21 +73,7 @@ public class SphericCoordinate implements Coordinate {
 	}
 
 	@Override
-	public double getDistance(Coordinate coord) {
-		if(coord == null) {
-			return -Double.MAX_VALUE;
-		}
-		if(coord instanceof CartesianCoordinate) {
-			return getCartesianDistance(coord);
-		}
-		return getSphericDistance(coord);
-	}
-
-	@Override
 	public boolean isEqual(Coordinate coord) {
-		if(coord == null) {
-			return false;
-		}
 		SphericCoordinate tmp = coord.asSphericCoordinate();
 		return	Math.abs(this.latitude - tmp.latitude) <= eps 
 			 && Math.abs(this.longitude - tmp.longitude) <= eps 
@@ -148,5 +121,4 @@ public class SphericCoordinate implements Coordinate {
 			this.radius = radius;
 		}
 	}
-
 }

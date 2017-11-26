@@ -82,7 +82,7 @@ public class SphericCoordinateTest {
 		assertEquals(a.asCartesianCoordinate().getDistance(d), 1364.5507690867269, 0.001);
 		assertEquals(c.asCartesianCoordinate().getDistance(d), 1819.4010254489688, 0.001);
 		
-		assertEquals(a.getCartesianDistance(null), -Double.MAX_VALUE, 0.001);
-		assertEquals(a.getSphericDistance(null), -Double.MAX_VALUE, 0.001);
+		assertEquals(a.asCartesianCoordinate().getDistance(null), -Double.MAX_VALUE, 0.001);
+		assertEquals(a.getDistance(null), -Double.MAX_VALUE, 0.001);
 	}
 }

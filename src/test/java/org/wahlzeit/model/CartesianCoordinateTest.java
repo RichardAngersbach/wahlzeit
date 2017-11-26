@@ -77,7 +77,7 @@ public class CartesianCoordinateTest {
 		assertEquals(a.getDistance(c), Math.sqrt(2), 0.001);
 		assertEquals(a.getDistance(d), Math.sqrt(5), 0.001);
 		
-		assertEquals(a.getCartesianDistance(null), -Double.MAX_VALUE, 0.001);
-		assertEquals(a.getSphericDistance(null), -Double.MAX_VALUE, 0.001);
+		assertEquals(a.getDistance(null), -Double.MAX_VALUE, 0.001);
+		assertEquals(a.asSphericCoordinate().getDistance(null), -Double.MAX_VALUE, 0.001);
 	}
 }
