@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Assert;
 import org.junit.Before;
 
 public class CartesianCoordinateTest {
@@ -26,7 +27,7 @@ public class CartesianCoordinateTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testCtor() {
-		CartesianCoordinate tmp = new CartesianCoordinate(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+		CartesianCoordinate tmp = new CartesianCoordinate(Double.NEGATIVE_INFINITY, Double.MAX_VALUE, Double.NaN);
 	}
 	
 	@Test
@@ -38,7 +39,11 @@ public class CartesianCoordinateTest {
 		assertTrue(e.equals(new SphericCoordinate(Math.PI/4.0, Math.PI/4.0, 1.0)));
 		
 		assertTrue(a.equals(b));
-		assertFalse(a.equals(null));
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testEqualsNull() {
+		a.equals(null);
 	}
 	
 	@Test
@@ -46,26 +51,30 @@ public class CartesianCoordinateTest {
 		assertTrue(a.equals(a.asSphericCoordinate().asCartesianCoordinate()));
 		assertTrue(b.equals(b.asSphericCoordinate().asCartesianCoordinate()));
 		assertTrue(c.equals(c.asSphericCoordinate().asCartesianCoordinate()));
-		assertTrue(d.equals(d.asSphericCoordinate().asCartesianCoordinate()));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidConversion() {
+		d.equals(d.asSphericCoordinate().asCartesianCoordinate()); //Coordinates are zero -> conversion will result to dividing by zero
 	}
 	
 	@Test 
 	public void testSetAndGet() {
 		CartesianCoordinate tmp = new CartesianCoordinate(0.0, 0.0, 0.0);
-		tmp.setX(Double.NaN);
+		tmp.setX(1.0);
 		tmp.setY(0.0);
 		tmp.setZ(-1.0);
 		
-		assertEquals(tmp.getX(), Double.NaN, 0.001);
+		assertEquals(tmp.getX(), 1.0, 0.001);
 		assertEquals(tmp.getY(), 0.0, 0.001);
 		assertEquals(tmp.getZ(), -1.0, 0.001);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetAndGet2() {
-		a.setX(Double.MAX_VALUE);
+		a.setX(Double.NaN);
 		a.setY(Double.MAX_VALUE);
-		a.setZ(Double.MAX_VALUE);
+		a.setZ(Double.NEGATIVE_INFINITY);
 	}
 	
 	@Test
@@ -76,8 +85,11 @@ public class CartesianCoordinateTest {
 		assertEquals(a.getDistance(b), 0.0, 0.001);
 		assertEquals(a.getDistance(c), Math.sqrt(2), 0.001);
 		assertEquals(a.getDistance(d), Math.sqrt(5), 0.001);
-		
-		assertEquals(a.getDistance(null), -Double.MAX_VALUE, 0.001);
-		assertEquals(a.asSphericCoordinate().getDistance(null), -Double.MAX_VALUE, 0.001);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testGetDistanceNull() {
+		a.asSphericCoordinate().getDistance(null);
+		a.getDistance(null);
 	}
 }

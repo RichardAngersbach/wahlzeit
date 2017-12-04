@@ -14,9 +14,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	
 	//parameterized constructor 
 	public CartesianCoordinate(double x, double y, double z) {
-		if(x >= Double.MAX_VALUE || y >= Double.MAX_VALUE || z >= Double.MAX_VALUE) {
-			throw new IllegalArgumentException("Illegal Arguments");
-		}
+		assertValidValue(x);
+		assertValidValue(y);
+		assertValidValue(z);
+		
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -29,10 +30,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	
 	@Override
 	public double getCartesianDistance(Coordinate coord) {
-		CartesianCoordinate tmp = coord.asCartesianCoordinate();		
-		if(tmp.x >= Double.MAX_VALUE || tmp.y >= Double.MAX_VALUE || tmp.z >= Double.MAX_VALUE) {
-			throw new IllegalArgumentException("Illegal Arguments");
-		}
+		assertNotNullArg(coord);
+		CartesianCoordinate tmp = coord.asCartesianCoordinate();
+		
 		return Math.sqrt( Math.pow(this.x - tmp.x, 2.0) 
 						+ Math.pow(this.y - tmp.y, 2.0) 
 						+ Math.pow(this.z - tmp.z, 2.0) );
@@ -57,17 +57,21 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		} else if(Math.abs(x) <= eps && y < 0) {
 			longitude = -Math.PI/2.0;
 		}
-		return new SphericCoordinate(latitude, longitude, r);
+		SphericCoordinate ret = new SphericCoordinate(latitude, longitude, r);
+		assertClassInvariants(ret);
+		return ret;
 	}
 
 	@Override
 	public double getSphericDistance(Coordinate coord) {
+		assertNotNullArg(coord);
 		SphericCoordinate sphericThis = this.asSphericCoordinate();
 		return sphericThis.getSphericDistance(coord);
 	}
 
 	@Override
 	public boolean isEqual(Coordinate coord) {
+		assertNotNullArg(coord);
 		CartesianCoordinate tmp = coord.asCartesianCoordinate();
 		return	Math.abs(this.x - tmp.x) <= eps 
 			 && Math.abs(this.y - tmp.y) <= eps 
@@ -79,9 +83,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	}
 
 	public void setX(double x) {
-		if(Math.abs(x) >= Double.MAX_VALUE) {
-			throw new IllegalArgumentException("Illegal Arguments");
-		}
+		assertValidValue(x);
 		this.x = x;
 	}
 
@@ -90,16 +92,12 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	}
 
 	public void setY(double y) {
-		if(Math.abs(y) >= Double.MAX_VALUE) {
-			throw new IllegalArgumentException("Illegal Arguments");
-		}
+		assertValidValue(y);
 		this.y = y;
 	}
 
 	public double getZ() {
-		if(Math.abs(z) >= Double.MAX_VALUE) {
-			throw new IllegalArgumentException("Illegal Arguments");
-		}
+		assertValidValue(z);
 		return z;
 	}
 

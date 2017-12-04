@@ -21,7 +21,7 @@ public class SphericCoordinateTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testCtor() {
-		SphericCoordinate tmp = new SphericCoordinate(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+		SphericCoordinate tmp = new SphericCoordinate(Double.NEGATIVE_INFINITY, Double.MAX_VALUE, Double.NaN);
 	}
 	
 	@Test
@@ -35,16 +35,23 @@ public class SphericCoordinateTest {
 		
 		assertTrue(a.equals(b));
 		assertFalse(a.equals(c));
-		
-		assertFalse(a.equals(null));
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testEqualsNull() {
+		a.equals(null);
 	}
 	
 	@Test
 	public void testConversions() {
 		assertTrue(a.equals(a.asCartesianCoordinate().asSphericCoordinate()));
 		assertTrue(b.equals(b.asCartesianCoordinate().asSphericCoordinate()));
-		assertTrue(c.equals(c.asCartesianCoordinate().asSphericCoordinate()));
 		assertTrue(d.equals(d.asCartesianCoordinate().asSphericCoordinate()));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidConversion() {
+		c.equals(c.asCartesianCoordinate().asSphericCoordinate()); //radius is zero -> conversion will result to dividing by zero
 	}
 	
 	@Test 
@@ -81,8 +88,11 @@ public class SphericCoordinateTest {
 		assertEquals(c.getDistance(d), 1819.4010254489688, 0.001);
 		assertEquals(a.asCartesianCoordinate().getDistance(d), 1364.5507690867269, 0.001);
 		assertEquals(c.asCartesianCoordinate().getDistance(d), 1819.4010254489688, 0.001);
-		
-		assertEquals(a.asCartesianCoordinate().getDistance(null), -Double.MAX_VALUE, 0.001);
-		assertEquals(a.getDistance(null), -Double.MAX_VALUE, 0.001);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testGetDistanceNull() {
+		a.asCartesianCoordinate().getDistance(null);
+		a.getDistance(null);
 	}
 }
