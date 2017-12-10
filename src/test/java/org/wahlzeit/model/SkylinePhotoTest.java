@@ -44,6 +44,10 @@ public class SkylinePhotoTest {
 	public void testSetAndGet() {
 		photo.setDate("1.1.2018");	
 		assertTrue(photo.getDate().compareTo("1.1.2018") == 0);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testSetAndGet2() {
 		photoLoc.setDate(null);
 		assertTrue(photoLoc.getDate().compareTo("") == 0);
 	}

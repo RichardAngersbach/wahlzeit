@@ -12,35 +12,16 @@ public class SphericCoordinate extends AbstractCoordinate {
 		this.radius = 0.0;
 	}
 		
-		//parameterized constructor 
+	//parameterized constructor
 	public SphericCoordinate(double latitude, double longitude, double radius) {
-		assertValidValue(latitude);
-		assertValidValue(longitude);
-		assertValidValue(radius);
-		//range of latitude is -90° to 90°
-		if(Math.abs(latitude) <= Math.PI/2.0) {
-			this.latitude = latitude;
-		}
-		else {
-			this.latitude = 0.0;
-		}
-		//range of longitude is -180° to 180°
-		if(Math.abs(longitude) <= Math.PI) {
-			this.longitude = longitude;
-		} else {
-			int n = (int) (longitude / Math.PI);
-			this.longitude = longitude - n * Math.PI; 
-		}
-		//radius is non-negative
-		if(radius >= 0) {
-			this.radius = radius;
-		} else {
-			this.radius = 0.0;
-		}
+		setLatitude(latitude);
+		setLongitude(longitude);
+		setRadius(radius);
 	}
-
+	
+	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
 	@Override
-	public CartesianCoordinate asCartesianCoordinate() {
+	public CartesianCoordinate asCartesianCoordinate() throws IllegalArgumentException {
 		//see: https://vvvv.org/blog/polar-spherical-and-geographic-coordinates
 		double x = this.radius * Math.cos(this.latitude) * Math.cos(this.longitude);
 		double y = this.radius * Math.cos(this.latitude) * Math.sin(this.longitude);
@@ -49,9 +30,11 @@ public class SphericCoordinate extends AbstractCoordinate {
 		assertClassInvariants(ret);
 		return ret;
 	}
-
+	
+	//@throws NullPointerException when argument is null
+	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
 	@Override
-	public double getCartesianDistance(Coordinate coord) {
+	public double getCartesianDistance(Coordinate coord) throws NullPointerException, IllegalArgumentException {
 		assertNotNullArg(coord);
 		CartesianCoordinate cartThis = this.asCartesianCoordinate();
 		return cartThis.getCartesianDistance(coord);
@@ -61,9 +44,11 @@ public class SphericCoordinate extends AbstractCoordinate {
 	public SphericCoordinate asSphericCoordinate() {
 		return this;
 	}
-
+	
+	//@throws NullPointerException when the argument is null 
+	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
 	@Override
-	public double getSphericDistance(Coordinate coord) {
+	public double getSphericDistance(Coordinate coord) throws NullPointerException, IllegalArgumentException {
 		assertNotNullArg(coord);
 		SphericCoordinate tmp = coord.asSphericCoordinate();
 		
@@ -73,9 +58,11 @@ public class SphericCoordinate extends AbstractCoordinate {
 											   		+ Math.cos(this.latitude) * Math.cos(tmp.latitude) * Math.pow(Math.sin(diffLong/2.0), 2.0)));
 		return this.radius * centralAngle;
 	}
-
+	
+	//@throws NullPointerException when argument is null
+	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
 	@Override
-	public boolean isEqual(Coordinate coord) {
+	public boolean isEqual(Coordinate coord) throws NullPointerException, IllegalArgumentException {
 		assertNotNullArg(coord);
 		SphericCoordinate tmp = coord.asSphericCoordinate();
 		return	Math.abs(this.latitude - tmp.latitude) <= eps 
@@ -86,36 +73,52 @@ public class SphericCoordinate extends AbstractCoordinate {
 	public double getLongitude() {
 		return longitude;
 	}
-
+	
 	public void setLongitude(double longitude) {
-		assertValidValue(longitude);
-		if(Math.abs(longitude) <= Math.PI) {
-			this.longitude = longitude;
-		} else {
-			int n = (int) (longitude / Math.PI);
-			this.longitude = longitude - n * Math.PI; 
+		try {
+			assertValidValue(longitude);
+			if(Math.abs(longitude) <= Math.PI) {
+				this.longitude = longitude;
+			} else {
+				int n = (int) (longitude / Math.PI);
+				this.longitude = longitude - n * Math.PI; 
+			}
+		} catch(IllegalArgumentException e) {
+			this.longitude = 0.0;
 		}
 	}
 
 	public double getLatitude() {
 		return latitude;
 	}
-
+	
 	public void setLatitude(double latitude) {
-		assertValidValue(latitude);
-		if(Math.abs(latitude) <= Math.PI/2.0) {
-			this.latitude = latitude;
+		try {
+			assertValidValue(latitude);
+			if(Math.abs(latitude) <= Math.PI/2.0) {
+				this.latitude = latitude;
+			} else {
+				this.latitude = 0.0;
+			}
+		} catch(IllegalArgumentException e) {
+			this.latitude = 0.0;
 		}
 	}
 
 	public double getRadius() {
 		return radius;
 	}
-
+	
 	public void setRadius(double radius) {
-		assertValidValue(radius);
-		if(radius >= 0.0) {
-			this.radius = radius;
+		try {
+			assertValidValue(radius);
+			if(radius >= 0.0) {
+				this.radius = radius;
+			} else {
+				this.radius = 0.0;
+			}
+		} catch(IllegalArgumentException e) {
+			this.radius = 0.0;
 		}
 	}
 }

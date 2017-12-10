@@ -21,11 +21,11 @@ public class SkylinePhotoManager extends PhotoManager {
 	}
 	
 	/**
-	 *
+	 * @throws NullPointerException when argument id is null or SkylinePhotoFactory couldn't load a photo
 	 */
-	public Photo getPhotoFromId(PhotoId id) {
+	public Photo getPhotoFromId(PhotoId id) throws NullPointerException {
 		if (id == null) {
-			return null;
+			throw new NullPointerException("Argument Photo Id is null");
 		}
 
 		Photo result = doGetPhotoFromId(id);
@@ -34,6 +34,8 @@ public class SkylinePhotoManager extends PhotoManager {
 			result = SkylinePhotoFactory.getInstance().loadPhoto(id);
 			if (result != null) {
 				doAddPhoto(result);
+			} else {
+				throw new NullPointerException("Couldn't load a photo from id");
 			}
 		}
 

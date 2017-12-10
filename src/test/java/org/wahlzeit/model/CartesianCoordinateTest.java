@@ -25,9 +25,10 @@ public class CartesianCoordinateTest {
 		e = new CartesianCoordinate(0.5, 0.5, 1/Math.sqrt(2.0));
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCtor() {
 		CartesianCoordinate tmp = new CartesianCoordinate(Double.NEGATIVE_INFINITY, Double.MAX_VALUE, Double.NaN);
+		assertTrue(tmp.equals(new CartesianCoordinate()));
 	}
 	
 	@Test
@@ -51,11 +52,7 @@ public class CartesianCoordinateTest {
 		assertTrue(a.equals(a.asSphericCoordinate().asCartesianCoordinate()));
 		assertTrue(b.equals(b.asSphericCoordinate().asCartesianCoordinate()));
 		assertTrue(c.equals(c.asSphericCoordinate().asCartesianCoordinate()));
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testInvalidConversion() {
-		d.equals(d.asSphericCoordinate().asCartesianCoordinate()); //Coordinates are zero -> conversion will result to dividing by zero
+		assertTrue(d.equals(d.asSphericCoordinate().asCartesianCoordinate())); //setters map values to 0.0 for invalid values now
 	}
 	
 	@Test 
@@ -70,11 +67,15 @@ public class CartesianCoordinateTest {
 		assertEquals(tmp.getZ(), -1.0, 0.001);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSetAndGet2() {
 		a.setX(Double.NaN);
 		a.setY(Double.MAX_VALUE);
 		a.setZ(Double.NEGATIVE_INFINITY);
+		
+		assertEquals(a.getX(), 0.0, 0.001);
+		assertEquals(a.getY(), 0.0, 0.001);
+		assertEquals(a.getZ(), 0.0, 0.001);
 	}
 	
 	@Test
@@ -90,6 +91,10 @@ public class CartesianCoordinateTest {
 	@Test(expected = NullPointerException.class)
 	public void testGetDistanceNull() {
 		a.asSphericCoordinate().getDistance(null);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testGetDistanceNull2() {
 		a.getDistance(null);
 	}
 }

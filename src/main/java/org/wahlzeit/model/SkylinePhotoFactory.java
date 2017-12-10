@@ -31,14 +31,14 @@ public class SkylinePhotoFactory extends PhotoFactory {
 			log.config(LogBuilder.createSystemMessage().addAction("setting generic PhotoFactory").toString());
 			setInstance(new SkylinePhotoFactory());
 		}
-
 		return instance;
 	}
 
 	/**
 	 * Method to set the singleton instance of PhotoFactory.
+	 * @throws IllegalStateException when an instance already exists
 	 */
-	protected static synchronized void setInstance(SkylinePhotoFactory photoFactory) {
+	protected static synchronized void setInstance(SkylinePhotoFactory photoFactory) throws IllegalStateException {
 		if (instance != null) {
 			throw new IllegalStateException("attempt to initalize PhotoFactory twice");
 		}

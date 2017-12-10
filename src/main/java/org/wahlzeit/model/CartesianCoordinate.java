@@ -12,24 +12,21 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		this.z = 0.0;
 	}
 	
-	//parameterized constructor 
+	//parameterized constructor
 	public CartesianCoordinate(double x, double y, double z) {
-		assertValidValue(x);
-		assertValidValue(y);
-		assertValidValue(z);
-		
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		setX(x);
+		setY(y);
+		setZ(z);
 	}
 	
 	@Override
 	public CartesianCoordinate asCartesianCoordinate() {
 		return this;
 	}
-	
+	//@throws NullPointerException when the argument is null 
+	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
 	@Override
-	public double getCartesianDistance(Coordinate coord) {
+	public double getCartesianDistance(Coordinate coord) throws NullPointerException, IllegalArgumentException {
 		assertNotNullArg(coord);
 		CartesianCoordinate tmp = coord.asCartesianCoordinate();
 		
@@ -37,9 +34,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
 						+ Math.pow(this.y - tmp.y, 2.0) 
 						+ Math.pow(this.z - tmp.z, 2.0) );
 	}
-
+	
+	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
 	@Override
-	public SphericCoordinate asSphericCoordinate() {
+	public SphericCoordinate asSphericCoordinate() throws IllegalArgumentException {
 		//see: https://vvvv.org/blog/polar-spherical-and-geographic-coordinates
 		double r = Math.sqrt( Math.pow(this.x, 2.0) 
 				  			+ Math.pow(this.y, 2.0) 
@@ -61,16 +59,20 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		assertClassInvariants(ret);
 		return ret;
 	}
-
+	
+	//@throws NullPointerException when argument is null
+	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
 	@Override
-	public double getSphericDistance(Coordinate coord) {
+	public double getSphericDistance(Coordinate coord) throws NullPointerException, IllegalArgumentException {
 		assertNotNullArg(coord);
 		SphericCoordinate sphericThis = this.asSphericCoordinate();
 		return sphericThis.getSphericDistance(coord);
 	}
-
+	
+	//@throws NullPointerException when argument is null
+	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
 	@Override
-	public boolean isEqual(Coordinate coord) {
+	public boolean isEqual(Coordinate coord) throws NullPointerException, IllegalArgumentException {
 		assertNotNullArg(coord);
 		CartesianCoordinate tmp = coord.asCartesianCoordinate();
 		return	Math.abs(this.x - tmp.x) <= eps 
@@ -81,27 +83,42 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	public double getX() {
 		return x;
 	}
-
+	
+	//@throws IllegalArgumentException when invalid coordinate value is used
 	public void setX(double x) {
-		assertValidValue(x);
-		this.x = x;
+		try {
+			assertValidValue(x);
+			this.x = x;
+		} catch(IllegalArgumentException e) {
+			this.x = 0.0;
+		}
 	}
 
 	public double getY() {
 		return y;
 	}
-
+	
+	//@throws IllegalArgumentException when invalid coordinate value is used
 	public void setY(double y) {
-		assertValidValue(y);
-		this.y = y;
+		try {
+			assertValidValue(y);
+			this.y = y;
+		} catch(IllegalArgumentException e) {
+			this.y = 0.0;
+		}
 	}
 
 	public double getZ() {
-		assertValidValue(z);
 		return z;
 	}
-
+	
+	//@throws IllegalArgumentException when invalid coordinate value is used
 	public void setZ(double z) {
-		this.z = z;
+		try {
+			assertValidValue(z);
+			this.z = z;
+		} catch(IllegalArgumentException e) {
+			this.z = 0.0;
+		}
 	}
 }

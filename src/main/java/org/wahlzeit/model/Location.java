@@ -1,11 +1,13 @@
 package org.wahlzeit.model;
 
 public class Location {
-	public Coordinate coordinate = new CartesianCoordinate(0.0, 0.0, 0.0);
+	public Coordinate coordinate = new CartesianCoordinate();
 	
 	public Location(Coordinate coord) {
 		if(coord != null) {
 			this.coordinate = coord;
+		} else {
+			this.coordinate = new CartesianCoordinate();
 		}
 	}
 	
@@ -14,9 +16,9 @@ public class Location {
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj) throws NullPointerException {
 		if(obj == null) {
-			return false;
+			throw new NullPointerException("Object argument is null");
 		}
 		if(obj instanceof Location) {
 			Location loc = (Location) obj;
