@@ -37,7 +37,6 @@ public class SkylinePhotoManagerTest {
 		try {
 			m.addPhoto(p);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			Assert.fail();
 		}
 		assertTrue(m.getPhotoFromId(pId) != null);

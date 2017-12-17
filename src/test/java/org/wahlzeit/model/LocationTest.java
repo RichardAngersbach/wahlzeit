@@ -17,11 +17,6 @@ public class LocationTest {
 		Location loc4 = new Location(new SphericCoordinate());
 		Location loc5 = new Location(new SphericCoordinate(-2 * Math.PI, -2 * Math.PI, -1.0));
 		assertTrue(loc4.equals(loc5));
-	}
-	
-	@Test(expected = NullPointerException.class)
-	public void compareLocations2() {
-		Location loc = new Location(new CartesianCoordinate());
-		loc.equals(null);
+		assertFalse(loc.equals(null));
 	}
 }

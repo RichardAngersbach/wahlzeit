@@ -16,9 +16,9 @@ public class Location {
 	}
 	
 	@Override
-	public boolean equals(Object obj) throws NullPointerException {
+	public boolean equals(Object obj) {
 		if(obj == null) {
-			throw new NullPointerException("Object argument is null");
+			return false;
 		}
 		if(obj instanceof Location) {
 			Location loc = (Location) obj;

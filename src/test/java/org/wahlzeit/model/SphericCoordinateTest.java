@@ -21,7 +21,7 @@ public class SphericCoordinateTest {
 	
 	@Test
 	public void testCtor() {
-		SphericCoordinate tmp = new SphericCoordinate(Double.NEGATIVE_INFINITY, Double.MAX_VALUE, Double.NaN);
+		SphericCoordinate tmp = new SphericCoordinate(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NaN);
 		assertTrue(tmp.equals(new SphericCoordinate()));
 	}
 	
@@ -36,11 +36,7 @@ public class SphericCoordinateTest {
 		
 		assertTrue(a.equals(b));
 		assertFalse(a.equals(c));
-	}
-	
-	@Test(expected = NullPointerException.class)
-	public void testEqualsNull() {
-		a.equals(null);
+		assertFalse(a.equals(null));
 	}
 	
 	@Test
@@ -65,9 +61,9 @@ public class SphericCoordinateTest {
 	
 	@Test
 	public void testSetAndGet2() {
-		a.setLatitude(Double.MAX_VALUE);
-		a.setLongitude(Double.MAX_VALUE);
-		a.setRadius(Double.MAX_VALUE);
+		a.setLatitude(Double.POSITIVE_INFINITY);
+		a.setLongitude(Double.NEGATIVE_INFINITY);
+		a.setRadius(Double.NaN);
 		
 		assertEquals(a.getLatitude(), 0.0, 0.001);
 		assertEquals(a.getLongitude(), 0.0, 0.001);
@@ -91,12 +87,12 @@ public class SphericCoordinateTest {
 		assertEquals(c.asCartesianCoordinate().getDistance(d), 1819.4010254489688, 0.001);
 	}
 	
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testGetDistanceNull() {
 		a.asCartesianCoordinate().getDistance(null);
 	}
 	
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testGetDistanceNull2() {
 		a.getDistance(null);
 	}

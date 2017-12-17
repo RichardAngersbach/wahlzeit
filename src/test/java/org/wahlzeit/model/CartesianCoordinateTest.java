@@ -27,7 +27,7 @@ public class CartesianCoordinateTest {
 	
 	@Test
 	public void testCtor() {
-		CartesianCoordinate tmp = new CartesianCoordinate(Double.NEGATIVE_INFINITY, Double.MAX_VALUE, Double.NaN);
+		CartesianCoordinate tmp = new CartesianCoordinate(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NaN);
 		assertTrue(tmp.equals(new CartesianCoordinate()));
 	}
 	
@@ -40,11 +40,7 @@ public class CartesianCoordinateTest {
 		assertTrue(e.equals(new SphericCoordinate(Math.PI/4.0, Math.PI/4.0, 1.0)));
 		
 		assertTrue(a.equals(b));
-	}
-	
-	@Test(expected = NullPointerException.class)
-	public void testEqualsNull() {
-		a.equals(null);
+		assertFalse(a.equals(null));
 	}
 	
 	@Test
@@ -70,7 +66,7 @@ public class CartesianCoordinateTest {
 	@Test
 	public void testSetAndGet2() {
 		a.setX(Double.NaN);
-		a.setY(Double.MAX_VALUE);
+		a.setY(Double.POSITIVE_INFINITY);
 		a.setZ(Double.NEGATIVE_INFINITY);
 		
 		assertEquals(a.getX(), 0.0, 0.001);
@@ -88,12 +84,12 @@ public class CartesianCoordinateTest {
 		assertEquals(a.getDistance(d), Math.sqrt(5), 0.001);
 	}
 	
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testGetDistanceNull() {
 		a.asSphericCoordinate().getDistance(null);
 	}
 	
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testGetDistanceNull2() {
 		a.getDistance(null);
 	}

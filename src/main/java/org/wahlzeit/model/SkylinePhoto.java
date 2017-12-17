@@ -28,11 +28,11 @@ public class SkylinePhoto extends Photo {
 	
 	/**
 	 * @methodtype set
-	 * @throws NullPointerException if argument string is null
+	 * @throws IllegalArgumentException if argument string is null
 	 */
 	public void setDate(String d) throws NullPointerException {
 		if(d == null) {
-			throw new NullPointerException("Argument string is null");
+			throw new IllegalArgumentException("Argument string is null");
 		}
 		date = d;
 	}

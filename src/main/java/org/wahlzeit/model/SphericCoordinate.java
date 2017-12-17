@@ -19,7 +19,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 		setRadius(radius);
 	}
 	
-	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
+	//@throws 
 	@Override
 	public CartesianCoordinate asCartesianCoordinate() throws IllegalArgumentException {
 		//see: https://vvvv.org/blog/polar-spherical-and-geographic-coordinates
@@ -27,15 +27,16 @@ public class SphericCoordinate extends AbstractCoordinate {
 		double y = this.radius * Math.cos(this.latitude) * Math.sin(this.longitude);
 		double z = this.radius * Math.sin(this.latitude);
 		CartesianCoordinate ret = new CartesianCoordinate(x, y, z);
-		assertClassInvariants(ret);
 		return ret;
 	}
 	
-	//@throws NullPointerException when argument is null
-	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
+	//@throws IllegalArgumentException when argument is null
+	//@throws 
 	@Override
-	public double getCartesianDistance(Coordinate coord) throws NullPointerException, IllegalArgumentException {
+	public double getCartesianDistance(Coordinate coord) throws IllegalArgumentException, ClassInvariantsException {
 		assertNotNullArg(coord);
+		assertClassInvariants(coord);
+		
 		CartesianCoordinate cartThis = this.asCartesianCoordinate();
 		return cartThis.getCartesianDistance(coord);
 	}
@@ -45,11 +46,13 @@ public class SphericCoordinate extends AbstractCoordinate {
 		return this;
 	}
 	
-	//@throws NullPointerException when the argument is null 
-	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
+	//@throws IllegalArgumentException when argument is null
+	//@throws 
 	@Override
-	public double getSphericDistance(Coordinate coord) throws NullPointerException, IllegalArgumentException {
+	public double getSphericDistance(Coordinate coord) throws IllegalArgumentException, ClassInvariantsException {
 		assertNotNullArg(coord);
+		assertClassInvariants(coord);
+		
 		SphericCoordinate tmp = coord.asSphericCoordinate();
 		
 		double diffLat = Math.abs(this.latitude - tmp.latitude);
@@ -59,11 +62,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 		return this.radius * centralAngle;
 	}
 	
-	//@throws NullPointerException when argument is null
-	//@throws IllegalArgumentException when conversion results to illegal arguments for the new object
 	@Override
-	public boolean isEqual(Coordinate coord) throws NullPointerException, IllegalArgumentException {
-		assertNotNullArg(coord);
+	public boolean isEqual(Coordinate coord) {
 		SphericCoordinate tmp = coord.asSphericCoordinate();
 		return	Math.abs(this.latitude - tmp.latitude) <= eps 
 			 && Math.abs(this.longitude - tmp.longitude) <= eps 
