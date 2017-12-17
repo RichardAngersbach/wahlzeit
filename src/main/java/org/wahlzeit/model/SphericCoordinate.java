@@ -19,9 +19,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 		setRadius(radius);
 	}
 	
-	//@throws 
 	@Override
-	public CartesianCoordinate asCartesianCoordinate() throws IllegalArgumentException {
+	public CartesianCoordinate asCartesianCoordinate() {
 		//see: https://vvvv.org/blog/polar-spherical-and-geographic-coordinates
 		double x = this.radius * Math.cos(this.latitude) * Math.cos(this.longitude);
 		double y = this.radius * Math.cos(this.latitude) * Math.sin(this.longitude);
@@ -31,7 +30,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 	
 	//@throws IllegalArgumentException when argument is null
-	//@throws 
+	//@throws ClassInvariantsException when class invariants not valid
 	@Override
 	public double getCartesianDistance(Coordinate coord) throws IllegalArgumentException, ClassInvariantsException {
 		assertNotNullArg(coord);
@@ -47,7 +46,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 	
 	//@throws IllegalArgumentException when argument is null
-	//@throws 
+	//@throws ClassInvariantsException when class invariants not valid
 	@Override
 	public double getSphericDistance(Coordinate coord) throws IllegalArgumentException, ClassInvariantsException {
 		assertNotNullArg(coord);

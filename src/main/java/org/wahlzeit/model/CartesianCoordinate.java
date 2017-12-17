@@ -24,7 +24,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		return this;
 	}
 	//@throws IllegalArgumentException when argument is null
-	//@throws
+	//@throws ClassInvariantsException when class invariants not valid
 	@Override
 	public double getCartesianDistance(Coordinate coord) throws IllegalArgumentException, ClassInvariantsException {
 		assertNotNullArg(coord);
@@ -37,9 +37,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
 						+ Math.pow(this.z - tmp.z, 2.0) );
 	}
 	
-	//@throws
 	@Override
-	public SphericCoordinate asSphericCoordinate() throws IllegalArgumentException {
+	public SphericCoordinate asSphericCoordinate() {
 		//see: https://vvvv.org/blog/polar-spherical-and-geographic-coordinates
 		double r = Math.sqrt( Math.pow(this.x, 2.0) 
 				  			+ Math.pow(this.y, 2.0) 
@@ -62,7 +61,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	}
 	
 	//@throws IllegalArgumentException when argument is null
-	//@throws 
+	//@throws ClassInvariantsException when class invariants not valid
 	@Override
 	public double getSphericDistance(Coordinate coord) throws IllegalArgumentException, ClassInvariantsException {
 		assertNotNullArg(coord);
@@ -85,7 +84,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		return x;
 	}
 	
-	//@throws IllegalArgumentException when invalid coordinate value is used
 	public void setX(double x) {
 		try {
 			assertValidValue(x);
@@ -99,7 +97,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		return y;
 	}
 	
-	//@throws IllegalArgumentException when invalid coordinate value is used
 	public void setY(double y) {
 		try {
 			assertValidValue(y);
@@ -113,7 +110,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		return z;
 	}
 	
-	//@throws IllegalArgumentException when invalid coordinate value is used
 	public void setZ(double z) {
 		try {
 			assertValidValue(z);
