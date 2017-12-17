@@ -10,13 +10,15 @@ public class SphericCoordinateTest {
 	SphericCoordinate b = null;
 	SphericCoordinate c = null;
 	SphericCoordinate d = null;
+	SphericCoordinate e = null;
 	
 	@Before
 	public void setUpCoordinates() {
-		a = new SphericCoordinate(Math.PI/2.0, Math.PI/2.0, 1.0);
-		b = new SphericCoordinate(Math.PI/2.0, Math.PI/2.0, 1.0);
-		c = new SphericCoordinate(2.0 * Math.PI, 2.0 * Math.PI, -1.0);
-		d = new SphericCoordinate(Math.PI/4.0, Math.PI/4.0, 1.0);
+		a = SphericCoordinate.getSphericInstance(new SphericCoordinate(Math.PI/2.0, Math.PI/2.0, 1.0));
+		b = SphericCoordinate.getSphericInstance(new SphericCoordinate(Math.PI/2.0, Math.PI/2.0, 1.0));
+		c = SphericCoordinate.getSphericInstance(new SphericCoordinate(2.0 * Math.PI, 2.0 * Math.PI, -1.0));
+		d = SphericCoordinate.getSphericInstance(new SphericCoordinate(Math.PI/4.0, Math.PI/4.0, 1.0));
+		e = SphericCoordinate.getSphericInstance(new SphericCoordinate(0.0, 0.0, 0.0));
 	}
 	
 	@Test
@@ -49,10 +51,9 @@ public class SphericCoordinateTest {
 	
 	@Test 
 	public void testSetAndGet() {
-		SphericCoordinate e = new SphericCoordinate(0.0, 0.0, 0.0);
-		e.setLatitude(Math.PI/4.0);
-		e.setLongitude(Math.PI);
-		e.setRadius(-100.0);
+		e = e.setLatitude(Math.PI/4.0);
+		e = e.setLongitude(Math.PI);
+		e = e.setRadius(-100.0);
 		
 		assertEquals(e.getLatitude(), Math.PI/4.0, 0.001);
 		assertEquals(e.getLongitude(), Math.PI, 0.001);
@@ -61,9 +62,9 @@ public class SphericCoordinateTest {
 	
 	@Test
 	public void testSetAndGet2() {
-		a.setLatitude(Double.POSITIVE_INFINITY);
-		a.setLongitude(Double.NEGATIVE_INFINITY);
-		a.setRadius(Double.NaN);
+		a = a.setLatitude(Double.POSITIVE_INFINITY);
+		a = a.setLongitude(Double.NEGATIVE_INFINITY);
+		a = a.setRadius(Double.NaN);
 		
 		assertEquals(a.getLatitude(), 0.0, 0.001);
 		assertEquals(a.getLongitude(), 0.0, 0.001);
@@ -76,9 +77,9 @@ public class SphericCoordinateTest {
 		assertEquals(a.asCartesianCoordinate().getDistance(b.asCartesianCoordinate()), a.getDistance(b), 0.001);
 		assertEquals(c.getDistance(a), 0.0, 0.001);
 		
-		a.setRadius(1737.4); //radius of the moon in km
-		d.setRadius(1737.4);
-		c.setRadius(1737.4);
+		a = a.setRadius(1737.4); //radius of the moon in km
+		d = d.setRadius(1737.4);
+		c = c.setRadius(1737.4);
 		
 		//pre-calculated with https://www.lpi.usra.edu/lunar/tools/lunardistancecalc/
 		assertEquals(a.getDistance(d), 1364.5507690867269, 0.001);

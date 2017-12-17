@@ -1,9 +1,9 @@
 package org.wahlzeit.model;
 
 public class CartesianCoordinate extends AbstractCoordinate {
-	private double x;
-	private double y;
-	private double z;
+	private final double x;
+	private final double y;
+	private final double z;
 	
 	//default constructor
 	public CartesianCoordinate() {
@@ -14,9 +14,37 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	
 	//parameterized constructor
 	public CartesianCoordinate(double x, double y, double z) {
-		setX(x);
-		setY(y);
-		setZ(z);
+		double _x, _y, _z;
+		_x = _y = _z = 0.0;
+		
+		try {
+			assertValidValue(x);
+			_x = x;
+		} catch(IllegalArgumentException e) {}
+		
+		try {
+			assertValidValue(y);
+			_y = y;
+		} catch(IllegalArgumentException e) {}
+		
+		try {
+			assertValidValue(z);
+			_z = z;
+		} catch(IllegalArgumentException e) {}
+		
+		this.x = _x;
+		this.y = _y;
+		this.z = _z;
+	}
+	
+	public static CartesianCoordinate getCartesianInstance(CartesianCoordinate coord) {
+		Integer integerCode = new Integer(coord.getCoordinateCode());
+		CartesianCoordinate instance = (CartesianCoordinate) sharedInstances.get(integerCode);
+		if(instance == null) {
+			sharedInstances.put(coord.getCoordinateCode(), coord);
+			return coord;
+		}
+		return instance;
 	}
 	
 	@Override
@@ -47,7 +75,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		double longitude = Math.atan2(y, x);
 		
 		//different results for atan2, see: https://en.wikipedia.org/wiki/Atan2 
-		if(x < 0 && y>= 0) {
+		if(x < 0 && y >= 0) {
 			longitude += Math.PI;
 		} else if(x < 0 && y < 0) {
 			longitude -= Math.PI;
@@ -84,38 +112,45 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		return x;
 	}
 	
-	public void setX(double x) {
+	public CartesianCoordinate setX(double x) {
+		double _x = 0.0;
 		try {
 			assertValidValue(x);
-			this.x = x;
-		} catch(IllegalArgumentException e) {
-			this.x = 0.0;
-		}
+			_x = x;
+		} catch(IllegalArgumentException e) {}
+		
+		return getCartesianInstance(new CartesianCoordinate(_x, this.getY(), this.getZ()));
 	}
 
 	public double getY() {
 		return y;
 	}
 	
-	public void setY(double y) {
+	public CartesianCoordinate setY(double y) {
+		double _y = 0.0;
 		try {
 			assertValidValue(y);
-			this.y = y;
-		} catch(IllegalArgumentException e) {
-			this.y = 0.0;
-		}
+			_y = y;
+		} catch(IllegalArgumentException e) {}
+		
+		return getCartesianInstance(new CartesianCoordinate(this.getX(), _y, this.getZ()));
 	}
 
 	public double getZ() {
 		return z;
 	}
 	
-	public void setZ(double z) {
+	public CartesianCoordinate setZ(double z) {
+		double _z = 0.0;
 		try {
 			assertValidValue(z);
-			this.z = z;
-		} catch(IllegalArgumentException e) {
-			this.z = 0.0;
-		}
+			_z = z;
+		} catch(IllegalArgumentException e) {}
+		
+		return getCartesianInstance(new CartesianCoordinate(this.getX(), this.getY(), _z));
+	}
+	
+	public int getCoordinateCode() {
+		return this.hashCode();
 	}
 }

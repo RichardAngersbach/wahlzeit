@@ -15,19 +15,21 @@ public class CartesianCoordinateTest {
 	CartesianCoordinate c = null;
 	CartesianCoordinate d = null;
 	CartesianCoordinate e = null;
+	CartesianCoordinate f = null;
 	
 	@Before
 	public void setUpCoordinates() {
-		a = new CartesianCoordinate(0.0, 1.0, 2.0);
-		b = new CartesianCoordinate(0.0, 1.0, 2.0);
-		c = new CartesianCoordinate(1.0, 1.0, 1.0);
-		d = new CartesianCoordinate(0.0, 0.0, 0.0);
-		e = new CartesianCoordinate(0.5, 0.5, 1/Math.sqrt(2.0));
+		a = CartesianCoordinate.getCartesianInstance(new CartesianCoordinate(0.0, 1.0, 2.0));
+		b = CartesianCoordinate.getCartesianInstance(new CartesianCoordinate(0.0, 1.0, 2.0));
+		c = CartesianCoordinate.getCartesianInstance(new CartesianCoordinate(1.0, 1.0, 1.0));
+		d = CartesianCoordinate.getCartesianInstance(new CartesianCoordinate(0.0, 0.0, 0.0));
+		e = CartesianCoordinate.getCartesianInstance(new CartesianCoordinate(0.5, 0.5, 1/Math.sqrt(2.0)));
+		f = CartesianCoordinate.getCartesianInstance(new CartesianCoordinate(0.0, 0.0, 0.0));
 	}
 	
 	@Test
 	public void testCtor() {
-		CartesianCoordinate tmp = new CartesianCoordinate(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NaN);
+		CartesianCoordinate tmp = CartesianCoordinate.getCartesianInstance(new CartesianCoordinate(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NaN));
 		assertTrue(tmp.equals(new CartesianCoordinate()));
 	}
 	
@@ -53,21 +55,20 @@ public class CartesianCoordinateTest {
 	
 	@Test 
 	public void testSetAndGet() {
-		CartesianCoordinate tmp = new CartesianCoordinate(0.0, 0.0, 0.0);
-		tmp.setX(1.0);
-		tmp.setY(0.0);
-		tmp.setZ(-1.0);
+		f = f.setX(1.0);
+		f = f.setY(0.0);
+		f = f.setZ(-1.0);
 		
-		assertEquals(tmp.getX(), 1.0, 0.001);
-		assertEquals(tmp.getY(), 0.0, 0.001);
-		assertEquals(tmp.getZ(), -1.0, 0.001);
+		assertEquals(f.getX(), 1.0, 0.001);
+		assertEquals(f.getY(), 0.0, 0.001);
+		assertEquals(f.getZ(), -1.0, 0.001);
 	}
 	
 	@Test
 	public void testSetAndGet2() {
-		a.setX(Double.NaN);
-		a.setY(Double.POSITIVE_INFINITY);
-		a.setZ(Double.NEGATIVE_INFINITY);
+		a = a.setX(Double.NaN);
+		a = a.setY(Double.POSITIVE_INFINITY);
+		a = a.setZ(Double.NEGATIVE_INFINITY);
 		
 		assertEquals(a.getX(), 0.0, 0.001);
 		assertEquals(a.getY(), 0.0, 0.001);

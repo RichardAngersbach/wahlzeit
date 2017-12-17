@@ -7,4 +7,5 @@ public interface Coordinate {
 	public double getSphericDistance(Coordinate coord) throws IllegalArgumentException, ClassInvariantsException;
 	public double getDistance(Coordinate coord);
 	public boolean isEqual(Coordinate coord);
+	public int getCoordinateCode();
 }

@@ -1,22 +1,57 @@
 package org.wahlzeit.model;
 
 public class SphericCoordinate extends AbstractCoordinate {
-	private double latitude; //in radians
-	private double longitude; // in radians
-	private double radius;
+	private final double latitude; //in radians
+	private final double longitude; // in radians
+	private final double radius;
 	
 	//default constructor
 	public SphericCoordinate() {
-		this.latitude = 0.0;
 		this.longitude = 0.0;
+		this.latitude = 0.0;
 		this.radius = 0.0;
 	}
 		
 	//parameterized constructor
 	public SphericCoordinate(double latitude, double longitude, double radius) {
-		setLatitude(latitude);
-		setLongitude(longitude);
-		setRadius(radius);
+		double lati, longi, rad;
+		lati = longi = rad = 0.0;
+		
+		try {
+			assertValidValue(latitude);
+			assertValidValue(longitude);
+			assertValidValue(radius);
+			
+			if(Math.abs(latitude) <= Math.PI/2.0) {
+				lati = latitude;
+			}
+			
+			if(Math.abs(longitude) <= Math.PI) {
+				longi = longitude;
+			} else {
+				int n = (int) (longitude / Math.PI);
+				longi = longitude - n * Math.PI; 
+			}
+			
+			if(radius >= 0.0) {
+				rad = radius;
+			}
+			
+		} catch(IllegalArgumentException e) {}
+		
+		this.longitude = longi;
+		this.latitude = lati;
+		this.radius = rad;
+	}
+	
+	public static SphericCoordinate getSphericInstance(SphericCoordinate coord) {
+		Integer integerCode = new Integer(coord.getCoordinateCode());
+		SphericCoordinate instance = (SphericCoordinate) sharedInstances.get(integerCode);
+		if(instance == null) {
+			sharedInstances.put(coord.getCoordinateCode(), coord);
+			return coord;
+		}
+		return instance;
 	}
 	
 	@Override
@@ -73,51 +108,54 @@ public class SphericCoordinate extends AbstractCoordinate {
 		return longitude;
 	}
 	
-	public void setLongitude(double longitude) {
+	public SphericCoordinate setLongitude(double longitude) {
+		double l = 0.0;
 		try {
 			assertValidValue(longitude);
 			if(Math.abs(longitude) <= Math.PI) {
-				this.longitude = longitude;
+				l = longitude;
 			} else {
 				int n = (int) (longitude / Math.PI);
-				this.longitude = longitude - n * Math.PI; 
+				l = longitude - n * Math.PI; 
 			}
-		} catch(IllegalArgumentException e) {
-			this.longitude = 0.0;
-		}
+		} catch(IllegalArgumentException e) {}
+		
+		return getSphericInstance(new SphericCoordinate(this.getLatitude(), l, this.getRadius()));
 	}
 
 	public double getLatitude() {
 		return latitude;
 	}
 	
-	public void setLatitude(double latitude) {
+	public SphericCoordinate setLatitude(double latitude) {
+		double l = 0.0;
 		try {
 			assertValidValue(latitude);
 			if(Math.abs(latitude) <= Math.PI/2.0) {
-				this.latitude = latitude;
-			} else {
-				this.latitude = 0.0;
+				l = latitude;
 			}
-		} catch(IllegalArgumentException e) {
-			this.latitude = 0.0;
-		}
+		} catch(IllegalArgumentException e) {}
+		
+		return getSphericInstance(new SphericCoordinate(l, this.getLongitude(), this.getRadius()));
 	}
 
 	public double getRadius() {
 		return radius;
 	}
 	
-	public void setRadius(double radius) {
+	public SphericCoordinate setRadius(double radius) {
+		double r = 0.0;
 		try {
 			assertValidValue(radius);
 			if(radius >= 0.0) {
-				this.radius = radius;
-			} else {
-				this.radius = 0.0;
+				r = radius;
 			}
-		} catch(IllegalArgumentException e) {
-			this.radius = 0.0;
-		}
+		} catch(IllegalArgumentException e) {}
+		
+		return getSphericInstance(new SphericCoordinate(this.getLatitude(), this.getLongitude(), r));
+	}
+	
+	public int getCoordinateCode() {
+		return this.hashCode();
 	}
 }

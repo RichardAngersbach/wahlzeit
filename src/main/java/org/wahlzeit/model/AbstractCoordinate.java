@@ -1,7 +1,11 @@
 package org.wahlzeit.model;
 
+import java.util.HashMap;
+
 public abstract class AbstractCoordinate implements Coordinate {
 	protected double eps = 0.001;
+	
+	public static HashMap<Integer, Coordinate> sharedInstances = new HashMap<>();
 	
 	//@throws IllegalArgumentException when argument is null
 	@Override
@@ -48,7 +52,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 			assertValidValue(c.asSphericCoordinate().getLatitude());
 			
 			if(c.asSphericCoordinate().getRadius() < 0.0 || Math.abs(c.asSphericCoordinate().getLongitude()) > Math.PI || Math.abs(c.asSphericCoordinate().getLatitude()) > Math.PI/2.0) {
-				throw new ClassInvariantsException("Illegal Arguments");
+				throw new ClassInvariantsException("Invalid class invariants");
 			}
 		}
 	}
