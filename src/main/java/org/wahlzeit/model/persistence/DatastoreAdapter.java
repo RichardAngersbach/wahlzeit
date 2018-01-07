@@ -26,6 +26,8 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+
+import org.wahlzeit.model.PatternInstance;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.OfyService;
 
@@ -33,6 +35,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.logging.Logger;
+
+@PatternInstance(
+		name = "Adapter",
+		participants = {
+				"DatastoreAdapter"
+		}
+)
 
 /**
  * Adapter for the Google Datastore. Use default constructor to create an instance.

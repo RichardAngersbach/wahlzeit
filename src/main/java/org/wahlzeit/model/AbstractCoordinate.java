@@ -2,6 +2,13 @@ package org.wahlzeit.model;
 
 import java.util.HashMap;
 
+@PatternInstance(
+		name = "Value Object",
+		participants = {
+				"AbstractCoordinate", "CartesianCoordinate", "SphericCoordinate"
+		}
+)
+
 public abstract class AbstractCoordinate implements Coordinate {
 	protected double eps = 0.001;
 	
