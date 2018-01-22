@@ -20,6 +20,11 @@ public class TypeObjectTest {
 	
 	SkylineManager sm;
 	
+	@ClassRule
+	public static TestRule chain = RuleChain.
+								   outerRule(new LocalDatastoreServiceTestConfigProvider()).
+								   around(new RegisteredOfyEnvironmentProvider());
+	
 	@Before
 	public void setUp() {
 		sm = SkylineManager.getInstance();

@@ -1,11 +1,14 @@
 package org.wahlzeit.model;
 
+import com.googlecode.objectify.annotation.Serialize;
 import com.googlecode.objectify.annotation.Subclass;
 
 @Subclass
 public class SkylinePhoto extends Photo {
 	private static final long serialVersionUID = 1L;
 	private String date = "";
+	
+	@Serialize
 	private Skyline skyline = null;
 
 	public SkylinePhoto() {

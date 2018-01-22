@@ -1,6 +1,8 @@
 package org.wahlzeit.model;
 
-public class Skyline {
+import org.wahlzeit.services.DataObject;
+
+public class Skyline extends DataObject {
 	private SkylineType skylineType = null;
 	
 	public Skyline(SkylineType st) {

@@ -7,7 +7,6 @@ import org.wahlzeit.services.DataObject;
 
 import com.googlecode.objectify.annotation.Entity;
 
-@Entity
 public class SkylineType extends DataObject {
 	private static final long serialVersionUID = 1L;
 	

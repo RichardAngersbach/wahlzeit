@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.wahlzeit.services.ObjectManager;
 
-public class SkylineManager {
+public class SkylineManager extends ObjectManager {
 	protected static final SkylineManager instance = new SkylineManager();
 	
 	List<Skyline> skylines = new ArrayList<Skyline>();
