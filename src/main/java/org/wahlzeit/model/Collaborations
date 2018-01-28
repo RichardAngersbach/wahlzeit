@@ -1,0 +1,90 @@
+/*
+	1. Collaboration between SkylinePhoto and Skyline
+*/
+	public collaboration SkylinePhoto-Skyline {
+		public role SkylinePhoto {
+			public Skyline getSkyline();
+			public void setSkyline(Skyline sl);
+		}
+		
+		public role Skyline; //doesn't provide any functionality for SkylinePhotos
+	}
+	
+	//-----------------------Binding-----------------------//
+	public class Skyline extends DataObject binds SkylinePhoto-Skyline.Skyline {
+	
+	}
+	
+	public class SkylinePhoto extends Photo binds SkylinePhoto-Skyline.SkylinePhoto {
+		public Skyline getSkyline() {
+			return SkylinePhoto-Skyline.SkylinePhoto.getSkyline();
+		}
+		
+		public void setSkyline(Skyline sl) {
+			SkylinePhoto-Skyline.SkylinePhoto.setSkyline(sl);
+		}
+	}
+
+/*
+	2. Collaboration between Skyline and SkylineType
+*/
+	public collaboration Skyline-SkylineType {
+		public role Skyline {
+			public SkylineType getType();
+			public void setType(SkylineType st);
+		}
+		
+		public role SkylineType {
+			public Skyline createInstance();
+			public boolean hasInstance(Skyline sl);
+		}
+	}
+	
+	//-----------------------Binding-----------------------//
+	public class Skyline extends DataObject binds Skyline-SkylineType.Skyline {
+		public SkylineType getType() {
+			return Skyline-SkylineType.Skyline.getType();
+		}
+		
+		public void setType(SkylineType st) {
+			Skyline-SkylineType.Skyline.setType(st);
+		}
+	}
+	
+	public class SkylineType extends DataObject binds Skyline-SkylineType.SkylineType {
+		public Skyline createInstance() {
+			return Skyline-SkylineType.SkylineType.createInstance();
+		}
+		
+		public boolean hasInstance(Skyline sl) {
+			return Skyline-SkylineType.SkylineType.hasInstance(sl);
+		}
+	}
+	
+	/*
+		3. Collaboration between SkylinePhoto and Location
+	*/
+	
+	public collaboration SkylinePhoto-Location {
+		public role SkylinePhoto {
+			public Location getLocation();
+			public void setLocation(Location loc);
+		}
+		
+		public role Location; //doesn't provide any functionality for SkylinePhotos
+	}
+	
+	//-----------------------Binding-----------------------//
+	public class SkylinePhoto extends Photo binds SkylinePhoto-Location.SkylinePhoto {
+		public Location getLocation() {
+			return SkylinePhoto-Location.SkylinePhoto.getLocation();
+		}
+		
+		public void setLocation(Location loc) {
+			SkylinePhoto-Location.SkylinePhoto.setLocation(loc);
+		}
+	}
+	
+	public class Location binds SkylinePhoto-Location.Location {
+	
+	}
